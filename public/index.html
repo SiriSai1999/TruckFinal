@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title>Google Calendar Events</title>
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat&family=Raleway&family=Playfair+Display&family=Open+Sans&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+</head>
+<body>
+<div class ="main-body">
+  <div = "heading-body">
+    <h2>
+      <span>MiTek</span>  Tampa Truck Schedule
+    </h2>
+  </div>
+
+<div class = "album py-2 bg-body-teritiary">
+
+  <div id="events-container">
+    <!-- Events will be dynamically added here -->
+
+
+
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="app.js"></script>
+  <script>
+    // Function to populate events in the 'events-container' div
+    function populateEvents(events) {
+      var eventsContainer = document.getElementById('events-container');
+
+      // Clear existing events
+      eventsContainer.innerHTML = '';
+
+      // Populate events
+      events.forEach(function(event) {
+        var eventElement = document.createElement('div');
+        eventElement.classList.add('event');
+
+        var eventContent = document.createElement('div');
+        var startTime = new Date(event.start.dateTime).toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true });
+var endTime = new Date(event.end.dateTime).toLocaleTimeString('en-US', { hour: 'numeric', minute: 'numeric', hour12: true });
+        eventContent.innerHTML = '<h1>' + event.summary + '</h1>' +
+                                 '<p><strong>Loading Dock:</strong>' +"&nbsp;&nbsp;<strong>" + event.description+ '</strong></p>' +
+                                 '<p><strong>ETA:&nbsp;&nbsp; </strong> '+ event.start.dateTime.split('T')[0] +"&nbsp;&nbsp;"+ startTime+"&nbsp;"+"-"+"&nbsp;" + endTime  + '</p>' ;
+
+        eventElement.appendChild(eventContent);
+        eventsContainer.appendChild(eventElement);
+      });
+    }
+
+    // Fetch events from the server
+    $.get('/events', function(events) {
+      populateEvents(events);
+    });
+  </script>
+</div>
+</div>
+</div>
+</body>
+</html>
